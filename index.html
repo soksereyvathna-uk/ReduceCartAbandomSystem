@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<!--
+  index.html
+  OneStop Smart Checkout - Main HTML Document
+  
+  Purpose:
+    This file defines the structure and layout of the OneStop Smart Checkout page.
+    It contains two primary functional sections:
+      1. Cart Section  - Displays selected items, allows discount code entry, and shows pricing.
+      2. Checkout Form - Collects user details and payment method to complete a purchase.
+    
+    A cart abandonment popup is also included, which is triggered via JavaScript
+    after a period of user inactivity to encourage purchase completion.
+  
+  Dependencies:
+    - style.css      : External stylesheet for all visual styling and layout.
+    - script.js      : External JavaScript file containing all interactive logic.
+    - Google Fonts   : Loads the 'Poppins' typeface from the Google Fonts CDN.
+-->
+<html lang="en">
+<head>
+
+  <!-- Character encoding declaration - ensures correct rendering of special characters -->
+  <meta charset="UTF-8">
+
+  <!-- Browser tab title for the checkout page -->
+  <title>OneStop Smart Checkout</title>
+
+  <!-- Link to the external CSS stylesheet for layout and visual design -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Google Fonts import: loads Poppins in weights 300 (light), 400 (regular), 600 (semi-bold) -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <!-- =====================================================================
+       PAGE HEADING
+       Displays the main title of the checkout page at the top of the screen.
+  ====================================================================== -->
+  <h1>🛒 OneStop Smart Checkout</h1>
+
+  <!-- =====================================================================
+       MAIN CONTAINER
+       A flex container that holds both the Cart and Checkout cards side by side.
+       Uses CSS flexbox to allow wrapping on smaller screen sizes.
+  ====================================================================== -->
+  <div class="container">
+
+    <!-- =================================================================
+         CARD 1: CART SECTION
+         Displays the list of items in the user's cart, a discount code
+         input field, the calculated total price, and a status message area.
+    ================================================================== -->
+    <div class="card">
+      <h2>Cart</h2>
+
+      <!-- Individual cart item: Headphones -->
+      <!-- Each cart-item div shows the product name and its price -->
+      <div class="cart-item">
+        <span>🎧 Headphones</span>
+        <span>$50</span>
+      </div>
+
+      <!-- Individual cart item: T-shirt -->
+      <div class="cart-item">
+        <span>👕 T-shirt</span>
+        <span>$30</span>
+      </div>
+
+      <!-- Discount Code Input Field -->
+      <!-- The user can type a promotional code (e.g., "SAVE10") here.
+           The id="discount" allows script.js to read the entered value. -->
+      <input type="text" id="discount" placeholder="Enter code (SAVE10)">
+
+      <!-- Apply Discount Button -->
+      <!-- Calls applyDiscount() in script.js when clicked.
+           Validates the entered code and applies a 10% discount if valid. -->
+      <button onclick="applyDiscount()">Apply Discount</button>
+
+      <!-- Price Display Box -->
+      <!-- This container is dynamically updated by updatePriceUI() in script.js.
+           Initially shows the base total; updates when a discount is applied. -->
+      <div class="price-box" id="priceBox">
+        <!-- Default total display before any discount is applied -->
+        <div class="discounted">Total: $<span id="total">80</span></div>
+      </div>
+
+      <!-- Status Message Area -->
+      <!-- Displays feedback messages to the user such as:
+           - "✅ Discount code applied"
+           - "❌ Invalid code"
+           - "⚠️ Discount already applied"
+           Updated dynamically by JavaScript. -->
+      <div id="status"></div>
+    </div>
+
+    <!-- =================================================================
+         CARD 2: CHECKOUT SECTION
+         Contains a form collecting user details (name, email, address)
+         and a payment method selector to complete the purchase.
+    ================================================================== -->
+    <div class="card">
+      <h2>Checkout</h2>
+
+      <!-- Checkout Form -->
+      <!-- The submit event is intercepted by script.js to prevent page reload
+           and instead show a success message (id="success"). -->
+      <form id="form">
+
+        <!-- Full Name input - required field for order processing -->
+        <input type="text" placeholder="Full Name" required>
+
+        <!-- Email input - required for order confirmation communication -->
+        <input type="email" placeholder="Email" required>
+
+        <!-- Address input - required for shipping the order -->
+        <input type="text" placeholder="Address" required>
+
+        <!-- Payment Method Dropdown -->
+        <!-- Provides two payment options: Credit Card and PayPal.
+             The blank default option forces the user to make a selection. -->
+        <select required>
+          <option value="">Payment Method</option>
+          <option>Credit Card</option>
+          <option>PayPal</option>
+        </select>
+
+        <!-- Submit Button -->
+        <!-- Styled with the "primary" class (purple gradient).
+             Triggers form validation and the submit event listener in script.js. -->
+        <button class="primary" type="submit">Complete Purchase</button>
+
+      </form>
+
+      <!-- Guest Checkout Button -->
+      <!-- Allows users to proceed without creating an account.
+           Calls guestCheckout() in script.js, which shows an alert notification. -->
+      <button class="secondary" onclick="guestCheckout()">Guest Checkout</button>
+
+      <!-- Purchase Success Message -->
+      <!-- Hidden by default (display: none via CSS).
+           Shown dynamically by script.js when the form is successfully submitted. -->
+      <div id="success">✅ Purchase Successful!</div>
+    </div>
+
+  </div><!-- End .container -->
+
+  <!-- =====================================================================
+       CART ABANDONMENT POPUP
+       A fixed-position notification shown at the bottom-right corner of
+       the screen after 8 seconds of inactivity (no mouse movement or keypress).
+       
+       Purpose:
+         Encourages users who appear to be leaving without purchasing to
+         complete their order by offering a 10% discount incentive.
+       
+       Behaviour:
+         - Hidden by default via the "hidden" CSS class.
+         - Revealed by startTimer() / resetTimer() in script.js.
+         - The "Apply 10% & Continue" button calls applyPopupDiscount(),
+           which applies the discount and closes the popup.
+  ====================================================================== -->
+  <div id="popup" class="hidden">
+    <!-- Incentive message displayed to re-engage the user -->
+    <p>⚠️ Complete your purchase now and get 10% OFF!</p>
+
+    <!-- Popup Action Button -->
+    <!-- Calls applyPopupDiscount() in script.js:
+         applies the 10% discount and dismisses the popup. -->
+    <button onclick="applyPopupDiscount()">Apply 10% & Continue</button>
+  </div>
+
+  <!-- =====================================================================
+       JAVASCRIPT
+       Loaded at the bottom of <body> to ensure all HTML elements are
+       parsed and available in the DOM before the script executes.
+  ====================================================================== -->
+  <script src="script.js"></script>
+
+</body>
+</html>

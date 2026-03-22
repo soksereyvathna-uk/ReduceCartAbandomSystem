@@ -1,0 +1,225 @@
+/*
+ * style.css
+ * OneStop Smart Checkout - Stylesheet
+ *
+ * Purpose:
+ *   Defines all visual styling, layout, and component appearance for the
+ *   OneStop Smart Checkout page. This includes the page background, card
+ *   layout, form elements, buttons, popup notification, and status messages.
+ *
+ * Structure:
+ *   1.  Base / Body Styles
+ *   2.  Page Heading
+ *   3.  Layout Container
+ *   4.  Card Component
+ *   5.  Cart Item Row
+ *   6.  Price Display Box
+ *   7.  Form Inputs and Selects
+ *   8.  Buttons (Primary & Secondary)
+ *   9.  Cart Abandonment Popup
+ *   10. Utility Classes (.hidden)
+ *   11. Success Message
+ *   12. Status Message
+ */
+
+
+/* ============================================================
+   1. BASE / BODY STYLES
+   Sets the global font family, removes default margin, and
+   applies a diagonal two-tone purple gradient as the page
+   background to establish the brand visual identity.
+============================================================ */
+body {
+  font-family: 'Poppins', sans-serif; /* Google Font imported in index.html */
+  margin: 0;                          /* Removes default browser body margin */
+  background: linear-gradient(135deg, #667eea, #764ba2); /* Diagonal purple gradient background */
+}
+
+
+/* ============================================================
+   2. PAGE HEADING
+   Centers the main page title and applies white text so it
+   is legible against the dark purple gradient background.
+============================================================ */
+h1 {
+  text-align: center; /* Horizontally centres the heading */
+  color: white;       /* White text contrasts with the dark background */
+  margin: 20px 0;     /* Vertical spacing above and below the heading */
+}
+
+
+/* ============================================================
+   3. LAYOUT CONTAINER
+   A flexbox wrapper that positions the Cart and Checkout
+   cards side by side. flex-wrap allows them to stack
+   vertically on smaller screen widths (responsive layout).
+============================================================ */
+.container {
+  display: flex;          /* Enables flexbox layout for child cards */
+  justify-content: center;/* Horizontally centres the cards on the page */
+  gap: 30px;              /* Spacing between the two card elements */
+  flex-wrap: wrap;        /* Cards wrap to a new row on narrow screens */
+}
+
+
+/* ============================================================
+   4. CARD COMPONENT
+   A white rounded panel used for both the Cart and Checkout
+   sections. The box shadow adds depth and visual separation
+   from the gradient background.
+============================================================ */
+.card {
+  background: white;                          /* White fill contrasts with the purple background */
+  padding: 35px;                              /* Internal spacing around card content */
+  width: 360px;                               /* Fixed width for consistent card sizing */
+  border-radius: 15px;                        /* Rounded corners for a modern card appearance */
+  box-shadow: 0 15px 30px rgba(0,0,0,0.2);   /* Soft shadow: offset-y 15px, blur 30px, 20% opacity */
+}
+
+
+/* ============================================================
+   5. CART ITEM ROW
+   Lays out each cart item (product name and price) on a
+   single horizontal row with space between them using
+   space-between justification.
+============================================================ */
+.cart-item {
+  display: flex;              /* Flexbox layout for name/price row */
+  justify-content: space-between; /* Pushes name to the left, price to the right */
+  margin: 10px 0;             /* Vertical spacing between individual cart items */
+}
+
+
+/* ============================================================
+   6. PRICE DISPLAY BOX
+   Wraps the original and discounted price elements.
+   Provides top spacing to separate the price from the
+   discount input field above it.
+============================================================ */
+.price-box {
+  margin-top: 15px; /* Space between the discount input and the price display */
+  font-size: 18px;  /* Base font size for price text */
+}
+
+/* Original Price (shown with strikethrough once discount is applied) */
+.original {
+  text-decoration: line-through; /* Crosses out the original price to indicate it has changed */
+  color: gray;                   /* Muted colour to de-emphasise the old price */
+}
+
+/* Discounted / Current Total Price */
+.discounted {
+  color: #764ba2;       /* Brand purple colour to highlight the final price */
+  font-weight: bold;    /* Bold weight draws attention to the total */
+  font-size: 22px;      /* Larger than base font size for visual prominence */
+}
+
+
+/* ============================================================
+   7. FORM INPUTS AND SELECTS
+   Styles all <input> and <select> elements consistently.
+   Full width ensures inputs fill the card container.
+   Consistent padding, border-radius, and border colour
+   creates a unified form appearance.
+============================================================ */
+input, select {
+  width: 100%;              /* Input spans the full width of its parent card */
+  padding: 12px;            /* Internal padding for comfortable text entry */
+  margin: 8px 0;            /* Vertical spacing between consecutive form fields */
+  border-radius: 8px;       /* Slightly rounded corners to match the card style */
+  border: 1px solid #ddd;   /* Light grey border; subtle but clearly defines the field */
+}
+
+
+/* ============================================================
+   8. BUTTONS
+   Base button styles applied to all <button> elements.
+   Specific variants (.primary, .secondary) override or
+   extend these base styles.
+============================================================ */
+button {
+  width: 100%;          /* Full-width buttons for consistent layout inside cards */
+  padding: 12px;        /* Comfortable click/tap target size */
+  border-radius: 8px;   /* Rounded corners consistent with inputs and cards */
+  border: none;         /* Removes default browser button border */
+  margin-top: 10px;     /* Space between button and the element above it */
+  cursor: pointer;      /* Changes cursor to pointer to indicate interactivity */
+  font-weight: bold;    /* Bold text improves readability and emphasis */
+}
+
+/* Primary Button: used for the main call-to-action (Complete Purchase) */
+/* Applies the same purple gradient as the page background for brand consistency */
+.primary {
+  background: linear-gradient(135deg, #667eea, #764ba2); /* Gradient matches body background */
+  color: white; /* White text for contrast against the dark gradient */
+}
+
+/* Secondary Button: used for lower-priority actions (Guest Checkout) */
+/* Light grey background clearly distinguishes it from the primary action */
+.secondary {
+  background: #eee; /* Light grey; visually subordinate to the primary button */
+}
+
+
+/* ============================================================
+   9. CART ABANDONMENT POPUP
+   A fixed-position notification panel that appears at the
+   bottom-right corner of the viewport. It remains visible
+   regardless of page scroll position (position: fixed).
+   
+   Shown after 8 seconds of inactivity via script.js to
+   re-engage users who may be about to leave the page.
+============================================================ */
+#popup {
+  position: fixed;                            /* Stays in place relative to the viewport */
+  bottom: 30px;                               /* 30px from the bottom edge of the screen */
+  right: 30px;                                /* 30px from the right edge of the screen */
+  background: white;                          /* White background for readability */
+  padding: 20px;                              /* Internal spacing around popup content */
+  width: 260px;                               /* Fixed width for the popup panel */
+  border-radius: 12px;                        /* Rounded corners consistent with card style */
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);   /* Stronger shadow than cards to lift popup above content */
+}
+
+
+/* ============================================================
+   10. UTILITY CLASS: .hidden
+   A reusable utility class that hides any element it is
+   applied to. Used by JavaScript to toggle visibility of
+   the popup (id="popup") without removing it from the DOM.
+   
+   JavaScript calls:
+     element.classList.remove("hidden") -- to show the element
+     element.classList.add("hidden")    -- to hide the element
+============================================================ */
+.hidden {
+  display: none; /* Removes element from visual layout (not from DOM) */
+}
+
+
+/* ============================================================
+   11. SUCCESS MESSAGE
+   Displayed below the checkout form after a successful
+   form submission. Hidden by default; shown via JavaScript
+   when the form's submit event fires.
+============================================================ */
+#success {
+  display: none;      /* Hidden until form submission; toggled by script.js */
+  text-align: center; /* Centres the confirmation message horizontally */
+  color: green;       /* Green colour conventionally signals success */
+  font-weight: bold;  /* Bold weight makes the message stand out */
+  margin-top: 10px;   /* Spacing above the message to separate it from the form */
+}
+
+
+/* ============================================================
+   12. STATUS MESSAGE
+   Displays real-time feedback beneath the discount input
+   area in the Cart section. Messages are set dynamically
+   by JavaScript (e.g., success, error, or warning text).
+============================================================ */
+#status {
+  margin-top: 10px; /* Space between the price box / button above and this message */
+  font-size: 14px;  /* Slightly smaller than body text to indicate secondary information */
+  font-weight: bold;/* Bold weight ensures the message is noticed by the user */
+}
